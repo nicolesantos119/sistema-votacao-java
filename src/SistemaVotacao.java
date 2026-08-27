@@ -8,6 +8,8 @@ public class SistemaVotacao {
     static final int TOTAL_TURMAS = 3;
     static final int MAX_VOTANTES_POR_TURMA = 10;
 
+    static int quantidadeCandidatos = 0;
+
     static int lerInteiro(String mensagem) {
         while (true) {
             System.out.print(mensagem);
@@ -23,9 +25,27 @@ public class SistemaVotacao {
         }
     }
 
-    public static void main(String[] args) {
+    static void cadastrarCandidatos() {
+        if (quantidadeCandidatos > 0) {
+            System.out.println("Os candidatos já foram cadastrados.");
+            return;
+        }
 
-        System.out.println("Sistema de votação iniciado.");
+        int quantidade;
+
+        do {
+            quantidade = lerInteiro(
+                    "Quantidade de candidatos entre 1 e 5: "
+            );
+
+            if (quantidade < 1 || quantidade > MAX_CANDIDATOS) {
+                System.out.println("Quantidade inválida.");
+            }
+
+        } while (quantidade < 1 || quantidade > MAX_CANDIDATOS);
+    }
+
+    public static void main(String[] args) {
 
         int opcao;
 
@@ -42,7 +62,7 @@ public class SistemaVotacao {
             switch (opcao) {
 
                 case 1:
-                    System.out.println("Cadastro selecionado.");
+                    cadastrarCandidatos();
                     break;
 
                 case 2:
@@ -67,9 +87,6 @@ public class SistemaVotacao {
 
         } while (opcao != 5);
 
-
         scanner.close();
     }
 }
-
-
