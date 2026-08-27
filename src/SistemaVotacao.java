@@ -5,10 +5,13 @@ public class SistemaVotacao {
     static Scanner scanner = new Scanner(System.in);
 
     static final int MAX_CANDIDATOS = 5;
+    static final int TOTAL_TURMAS = 4;
 
     static int[] numerosCandidatos = new int[MAX_CANDIDATOS];
     static String[] nomesCandidatos = new String[MAX_CANDIDATOS];
     static int[] votosCandidatos = new int[MAX_CANDIDATOS];
+
+    static int[][] matrizVotos = new int[TOTAL_TURMAS][MAX_CANDIDATOS];
 
     static int quantidadeCandidatos = 0;
 
@@ -61,18 +64,101 @@ public class SistemaVotacao {
                     quantidadeCandidatos++;
 
                     System.out.println("Candidato cadastrado com sucesso!");
+
                     break;
 
                 case 2:
-                    System.out.println("Votação selecionada.");
+
+                    if (quantidadeCandidatos == 0) {
+                        System.out.println("Cadastre pelo menos um candidato primeiro.");
+                        break;
+                    }
+
+                    System.out.println("\n===== INÍCIO DA VOTAÇÃO =====");
+
+                    for (int turma = 0; turma < TOTAL_TURMAS; turma++) {
+
+                        System.out.println("\nTurma " + (turma + 1));
+
+                        for (int j = 0; j < quantidadeCandidatos; j++) {
+                            System.out.println(
+                                    numerosCandidatos[j] + " - " + nomesCandidatos[j]
+                            );
+                        }
+
+                        System.out.print("Digite o número do candidato votado: ");
+                        int voto = scanner.nextInt();
+
+                        boolean encontrado = false;
+
+                        for (int j = 0; j < quantidadeCandidatos; j++) {
+
+                            if (numerosCandidatos[j] == voto) {
+                                votosCandidatos[j]++;
+                                matrizVotos[turma][j]++;
+                                encontrado = true;
+                                break;
+                            }
+                        }
+
+                        if (encontrado) {
+                            System.out.println("Voto registrado!");
+                        } else {
+                            System.out.println("Candidato inválido. Voto não registrado.");
+                        }
+                    }
+
+                    System.out.println("\nVotação encerrada!");
+
                     break;
 
                 case 3:
-                    System.out.println("Resultado selecionado.");
+
+                    if (quantidadeCandidatos == 0) {
+                        System.out.println("Nenhum candidato cadastrado.");
+                        break;
+                    }
+
+                    System.out.println("\n===== RESULTADO DA VOTAÇÃO =====");
+
+                    for (int j = 0; j < quantidadeCandidatos; j++) {
+                        System.out.println(
+                                numerosCandidatos[j] + " - "
+                                        + nomesCandidatos[j] + ": "
+                                        + votosCandidatos[j] + " voto(s)"
+                        );
+                    }
+
                     break;
 
                 case 4:
-                    System.out.println("Matriz selecionada.");
+
+                    if (quantidadeCandidatos == 0) {
+                        System.out.println("Nenhum candidato cadastrado.");
+                        break;
+                    }
+
+                    System.out.println("\n===== MATRIZ DE VOTOS =====");
+
+                    System.out.print("Turma\t");
+
+                    for (int j = 0; j < quantidadeCandidatos; j++) {
+                        System.out.print(numerosCandidatos[j] + "\t");
+                    }
+
+                    System.out.println();
+
+                    for (int turma = 0; turma < TOTAL_TURMAS; turma++) {
+
+                        System.out.print("Turma " + (turma + 1) + "\t");
+
+                        for (int j = 0; j < quantidadeCandidatos; j++) {
+                            System.out.print(matrizVotos[turma][j] + "\t");
+                        }
+
+                        System.out.println();
+                    }
+
                     break;
 
                 case 5:
