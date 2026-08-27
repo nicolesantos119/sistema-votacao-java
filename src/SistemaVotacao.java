@@ -9,6 +9,7 @@ public class SistemaVotacao {
     static final int MAX_VOTANTES_POR_TURMA = 10;
 
     static int quantidadeCandidatos = 0;
+    static int[] numerosCandidatos = new int[MAX_CANDIDATOS];
 
     static int lerInteiro(String mensagem) {
         while (true) {
@@ -43,6 +44,38 @@ public class SistemaVotacao {
             }
 
         } while (quantidade < 1 || quantidade > MAX_CANDIDATOS);
+
+        // Etapa 7 - Validar o número identificador
+        for (int i = 0; i < quantidade; i++) {
+            int numero;
+
+            while (true) {
+                numero = lerInteiro(
+                        "\nNúmero do candidato " + (i + 1) + ": "
+                );
+
+                if (numero <= 0) {
+                    System.out.println("O número deve ser maior que zero.");
+                    continue;
+                }
+
+                boolean numeroRepetido = false;
+
+                for (int j = 0; j < i; j++) {
+                    if (numerosCandidatos[j] == numero) {
+                        numeroRepetido = true;
+                        break;
+                    }
+                }
+
+                if (numeroRepetido) {
+                    System.out.println("Esse número já está cadastrado.");
+                    continue;
+                }
+
+                break;
+            }
+        }
     }
 
     public static void main(String[] args) {
