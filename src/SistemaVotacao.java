@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class SistemaVotacao {
@@ -43,6 +44,7 @@ public class SistemaVotacao {
 
                     System.out.print("Número do candidato: ");
                     int numero = scanner.nextInt();
+
                     scanner.nextLine();
 
                     String nome;
@@ -80,11 +82,7 @@ public class SistemaVotacao {
 
                         System.out.println("\nTurma " + (turma + 1));
 
-                        for (int j = 0; j < quantidadeCandidatos; j++) {
-                            System.out.println(
-                                    numerosCandidatos[j] + " - " + nomesCandidatos[j]
-                            );
-                        }
+                        mostrarCandidatos();
 
                         System.out.print("Digite o número do candidato votado: ");
                         int voto = scanner.nextInt();
@@ -173,4 +171,15 @@ public class SistemaVotacao {
 
         scanner.close();
     }
+
+    static void mostrarCandidatos() {
+        System.out.println("\nCandidatos disponíveis:");
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+            System.out.println(
+                    numerosCandidatos[i] + " - " + nomesCandidatos[i]
+            );
+        }
+    }
 }
+
