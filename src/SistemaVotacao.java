@@ -90,6 +90,17 @@ public class SistemaVotacao {
                         break;
                     }
 
+                    int totalVotos = 0;
+
+                    for (int i = 0; i < quantidadeCandidatos; i++) {
+                        totalVotos += votosCandidatos[i];
+                    }
+
+                    if (totalVotos == 0) {
+                        System.out.println("Nenhum voto foi registrado.");
+                        break;
+                    }
+
                     System.out.println("\n===== RESULTADO DA VOTAÇÃO =====");
 
                     for (int i = 0; i < quantidadeCandidatos; i++) {
