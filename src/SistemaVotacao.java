@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class SistemaVotacao {
@@ -6,7 +5,7 @@ public class SistemaVotacao {
     static Scanner scanner = new Scanner(System.in);
 
     static final int MAX_CANDIDATOS = 5;
-    static final int TOTAL_TURMAS = 4;
+    static final int TOTAL_TURMAS = 3;
 
     static int[] numerosCandidatos = new int[MAX_CANDIDATOS];
     static String[] nomesCandidatos = new String[MAX_CANDIDATOS];
@@ -28,8 +27,7 @@ public class SistemaVotacao {
             System.out.println("4 - Exibir matriz de votos");
             System.out.println("5 - Sair");
 
-            System.out.print("Opção: ");
-            opcao = scanner.nextInt();
+            opcao = lerInteiro("Opção: ");
 
             switch (opcao) {
 
@@ -42,10 +40,30 @@ public class SistemaVotacao {
 
                     int i = quantidadeCandidatos;
 
-                    System.out.print("Número do candidato: ");
-                    int numero = scanner.nextInt();
+                    int numero;
 
-                    scanner.nextLine();
+                    do {
+                        numero = lerInteiro("Número do candidato: ");
+
+                        if (numero <= 0) {
+                            System.out.println("O número deve ser maior que zero.");
+                        }
+
+                        boolean repetido = false;
+
+                        for (int j = 0; j < quantidadeCandidatos; j++) {
+                            if (numerosCandidatos[j] == numero) {
+                                repetido = true;
+                                break;
+                            }
+                        }
+
+                        if (repetido) {
+                            System.out.println("Esse número já está cadastrado.");
+                            numero = -1;
+                        }
+
+                    } while (numero <= 0);
 
                     String nome;
 
@@ -78,35 +96,40 @@ public class SistemaVotacao {
 
                     System.out.println("\n===== INÍCIO DA VOTAÇÃO =====");
 
-                    for (int turma = 0; turma < TOTAL_TURMAS; turma++) {
+                    int turma;
 
-                        System.out.println("\nTurma " + (turma + 1));
+                    do {
+                        turma = lerInteiro("Informe a turma de 1 a 3: ");
 
-                        mostrarCandidatos();
-
-                        System.out.print("Digite o número do candidato votado: ");
-                        int voto = scanner.nextInt();
-
-                        boolean encontrado = false;
-
-                        for (int j = 0; j < quantidadeCandidatos; j++) {
-
-                            if (numerosCandidatos[j] == voto) {
-                                votosCandidatos[j]++;
-                                matrizVotos[turma][j]++;
-                                encontrado = true;
-                                break;
-                            }
+                        if (turma < 1 || turma > TOTAL_TURMAS) {
+                            System.out.println("Turma inválida.");
                         }
 
-                        if (encontrado) {
-                            System.out.println("Voto registrado!");
-                        } else {
-                            System.out.println("Candidato inválido. Voto não registrado.");
+                    } while (turma < 1 || turma > TOTAL_TURMAS);
+
+                    int indiceTurma = turma - 1;
+
+                    mostrarCandidatos();
+
+                    int voto = lerInteiro("Digite o número do candidato votado: ");
+
+                    boolean encontrado = false;
+
+                    for (int j = 0; j < quantidadeCandidatos; j++) {
+
+                        if (numerosCandidatos[j] == voto) {
+                            votosCandidatos[j]++;
+                            matrizVotos[indiceTurma][j]++;
+                            encontrado = true;
+                            break;
                         }
                     }
 
-                    System.out.println("\nVotação encerrada!");
+                    if (encontrado) {
+                        System.out.println("Voto registrado!");
+                    } else {
+                        System.out.println("Candidato inválido. Voto não registrado.");
+                    }
 
                     break;
 
@@ -146,12 +169,12 @@ public class SistemaVotacao {
 
                     System.out.println();
 
-                    for (int turma = 0; turma < TOTAL_TURMAS; turma++) {
+                    for (int t = 0; t < TOTAL_TURMAS; t++) {
 
-                        System.out.print("Turma " + (turma + 1) + "\t");
+                        System.out.print("Turma " + (t + 1) + "\t");
 
                         for (int j = 0; j < quantidadeCandidatos; j++) {
-                            System.out.print(matrizVotos[turma][j] + "\t");
+                            System.out.print(matrizVotos[t][j] + "\t");
                         }
 
                         System.out.println();
@@ -172,6 +195,17 @@ public class SistemaVotacao {
         scanner.close();
     }
 
+    static int lerInteiro(String mensagem) {
+        while (true) {
+            try {
+                System.out.print(mensagem);
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Digite apenas um número inteiro.");
+            }
+        }
+    }
+
     static void mostrarCandidatos() {
         System.out.println("\nCandidatos disponíveis:");
 
@@ -182,4 +216,3 @@ public class SistemaVotacao {
         }
     }
 }
-
