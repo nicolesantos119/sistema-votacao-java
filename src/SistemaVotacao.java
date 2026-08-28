@@ -103,34 +103,7 @@ public class SistemaVotacao {
                     break;
 
                 case 4:
-
-                    if (quantidadeCandidatos == 0) {
-                        System.out.println("Nenhum candidato cadastrado.");
-                        break;
-                    }
-
-                    System.out.println("\n===== MATRIZ DE VOTOS =====");
-
-                    for (int turma = 0; turma < TOTAL_TURMAS; turma++) {
-
-                        System.out.println("\nTurma " + (turma + 1) + ":");
-
-                        if (quantidadeVotosTurma[turma] == 0) {
-                            System.out.println("Nenhum voto registrado.");
-                        } else {
-
-                            for (int voto = 0;
-                                 voto < quantidadeVotosTurma[turma];
-                                 voto++) {
-
-                                System.out.println(
-                                        "Voto " + (voto + 1) + ": "
-                                                + votosPorTurma[turma][voto]
-                                );
-                            }
-                        }
-                    }
-
+                    exibirMatrizVotos();
                     break;
 
                 case 5:
@@ -219,6 +192,27 @@ public class SistemaVotacao {
             System.out.println(
                     numerosCandidatos[i] + " - " + nomesCandidatos[i]
             );
+        }
+    }
+
+    static void exibirMatrizVotos() {
+
+        System.out.println("\n===== MATRIZ DE VOTOS =====");
+
+        for (int i = 0; i < TOTAL_TURMAS; i++) {
+
+            System.out.print("Turma " + (i + 1) + ": ");
+
+            for (int j = 0; j < MAX_VOTANTES_POR_TURMA; j++) {
+
+                if (j < quantidadeVotosTurma[i]) {
+                    System.out.print(votosPorTurma[i][j] + " ");
+                } else {
+                    System.out.print("- ");
+                }
+            }
+
+            System.out.println();
         }
     }
 
