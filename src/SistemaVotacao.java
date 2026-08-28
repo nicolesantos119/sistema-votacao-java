@@ -104,12 +104,30 @@ public class SistemaVotacao {
                     System.out.println("\n===== RESULTADO DA VOTAÇÃO =====");
 
                     for (int i = 0; i < quantidadeCandidatos; i++) {
-                        System.out.println(
-                                numerosCandidatos[i] + " - "
-                                        + nomesCandidatos[i] + ": "
-                                        + votosCandidatos[i] + " voto(s)"
+
+                        double percentual =
+                                (votosCandidatos[i] * 100.0) / totalVotos;
+
+                        System.out.printf(
+                                "%s -> %d voto(s) (%.2f%%)%n",
+                                nomesCandidatos[i],
+                                votosCandidatos[i],
+                                percentual
                         );
                     }
+
+                    int maiorQuantidadeVotos = votosCandidatos[0];
+
+                    for (int i = 1; i < quantidadeCandidatos; i++) {
+                        if (votosCandidatos[i] > maiorQuantidadeVotos) {
+                            maiorQuantidadeVotos = votosCandidatos[i];
+                        }
+                    }
+
+                    System.out.println(
+                            "\nMaior quantidade de votos: "
+                                    + maiorQuantidadeVotos
+                    );
 
                     break;
 
