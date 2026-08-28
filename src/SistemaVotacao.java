@@ -32,139 +32,21 @@ public class SistemaVotacao {
             opcao = lerInteiro("Opção: ");
 
             switch (opcao) {
-
                 case 1:
-
-                    if (quantidadeCandidatos >= MAX_CANDIDATOS) {
-                        System.out.println("Limite de candidatos atingido.");
-                        break;
-                    }
-
-                    int numero;
-
-                    do {
-                        numero = lerInteiro("Número do candidato: ");
-
-                        if (numero <= 0) {
-                            System.out.println("O número deve ser maior que zero.");
-                            continue;
-                        }
-
-                        if (buscarCandidato(numero) != -1) {
-                            System.out.println("Esse número já está cadastrado.");
-                            numero = -1;
-                        }
-
-                    } while (numero <= 0);
-
-                    String nome;
-
-                    do {
-                        System.out.print("Nome do candidato: ");
-                        nome = scanner.nextLine().trim();
-
-                        if (nome.isEmpty()) {
-                            System.out.println("O nome não pode ficar vazio.");
-                        }
-
-                    } while (nome.isEmpty());
-
-                    numerosCandidatos[quantidadeCandidatos] = numero;
-                    nomesCandidatos[quantidadeCandidatos] = nome;
-                    votosCandidatos[quantidadeCandidatos] = 0;
-
-                    quantidadeCandidatos++;
-
-                    System.out.println("Candidato cadastrado com sucesso.");
-
+                    cadastrarCandidatos();
                     break;
-
                 case 2:
                     iniciarVotacao();
                     break;
-
                 case 3:
-
-                    if (quantidadeCandidatos == 0) {
-                        System.out.println("Nenhum candidato cadastrado.");
-                        break;
-                    }
-
-                    int totalVotos = 0;
-
-                    for (int i = 0; i < quantidadeCandidatos; i++) {
-                        totalVotos += votosCandidatos[i];
-                    }
-
-                    if (totalVotos == 0) {
-                        System.out.println("Nenhum voto foi registrado.");
-                        break;
-                    }
-
-                    System.out.println("\n===== RESULTADO DA VOTAÇÃO =====");
-
-                    for (int i = 0; i < quantidadeCandidatos; i++) {
-
-                        double percentual =
-                                (votosCandidatos[i] * 100.0) / totalVotos;
-
-                        System.out.printf(
-                                "%s -> %d voto(s) (%.2f%%)%n",
-                                nomesCandidatos[i],
-                                votosCandidatos[i],
-                                percentual
-                        );
-                    }
-
-                    int maiorQuantidadeVotos = votosCandidatos[0];
-
-                    for (int i = 1; i < quantidadeCandidatos; i++) {
-                        if (votosCandidatos[i] > maiorQuantidadeVotos) {
-                            maiorQuantidadeVotos = votosCandidatos[i];
-                        }
-                    }
-
-                    int quantidadeVencedores = 0;
-
-                    for (int i = 0; i < quantidadeCandidatos; i++) {
-                        if (votosCandidatos[i] == maiorQuantidadeVotos) {
-                            quantidadeVencedores++;
-                        }
-                    }
-
-                    if (quantidadeVencedores == 1) {
-                        System.out.print("Vencedor: ");
-                    } else {
-                        System.out.print("Empate entre: ");
-                    }
-
-                    boolean primeiroNome = true;
-
-                    for (int i = 0; i < quantidadeCandidatos; i++) {
-
-                        if (votosCandidatos[i] == maiorQuantidadeVotos) {
-
-                            if (!primeiroNome) {
-                                System.out.print(", ");
-                            }
-
-                            System.out.print(nomesCandidatos[i]);
-                            primeiroNome = false;
-                        }
-                    }
-
-                    System.out.println();
-
+                    exibirResultado();
                     break;
-
                 case 4:
                     exibirMatrizVotos();
                     break;
-
                 case 5:
                     System.out.println("Sistema encerrado.");
                     break;
-
                 default:
                     System.out.println("Opção inválida.");
             }
@@ -172,6 +54,51 @@ public class SistemaVotacao {
         } while (opcao != 5);
 
         scanner.close();
+    }
+
+    static void cadastrarCandidatos() {
+
+        if (quantidadeCandidatos >= MAX_CANDIDATOS) {
+            System.out.println("Limite de candidatos atingido.");
+            return;
+        }
+
+        int numero;
+
+        do {
+            numero = lerInteiro("Número do candidato: ");
+
+            if (numero <= 0) {
+                System.out.println("O número deve ser maior que zero.");
+                continue;
+            }
+
+            if (buscarCandidato(numero) != -1) {
+                System.out.println("Esse número já está cadastrado.");
+                numero = -1;
+            }
+
+        } while (numero <= 0);
+
+        String nome;
+
+        do {
+            System.out.print("Nome do candidato: ");
+            nome = scanner.nextLine().trim();
+
+            if (nome.isEmpty()) {
+                System.out.println("O nome não pode ficar vazio.");
+            }
+
+        } while (nome.isEmpty());
+
+        numerosCandidatos[quantidadeCandidatos] = numero;
+        nomesCandidatos[quantidadeCandidatos] = nome;
+        votosCandidatos[quantidadeCandidatos] = 0;
+
+        quantidadeCandidatos++;
+
+        System.out.println("Candidato cadastrado com sucesso.");
     }
 
     static void iniciarVotacao() {
@@ -232,11 +159,82 @@ public class SistemaVotacao {
             System.out.println("Voto registrado com sucesso.");
         }
 
-        if (quantidadeVotosTurma[indiceTurma]
-                == MAX_VOTANTES_POR_TURMA) {
-
+        if (quantidadeVotosTurma[indiceTurma] == MAX_VOTANTES_POR_TURMA) {
             System.out.println("Limite de 10 votantes atingido.");
         }
+    }
+
+    static void exibirResultado() {
+
+        if (quantidadeCandidatos == 0) {
+            System.out.println("Nenhum candidato cadastrado.");
+            return;
+        }
+
+        int totalVotos = 0;
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+            totalVotos += votosCandidatos[i];
+        }
+
+        if (totalVotos == 0) {
+            System.out.println("Nenhum voto foi registrado.");
+            return;
+        }
+
+        System.out.println("\n===== RESULTADO DA VOTAÇÃO =====");
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+
+            double percentual =
+                    (votosCandidatos[i] * 100.0) / totalVotos;
+
+            System.out.printf(
+                    "%s -> %d voto(s) (%.2f%%)%n",
+                    nomesCandidatos[i],
+                    votosCandidatos[i],
+                    percentual
+            );
+        }
+
+        int maiorQuantidadeVotos = votosCandidatos[0];
+
+        for (int i = 1; i < quantidadeCandidatos; i++) {
+            if (votosCandidatos[i] > maiorQuantidadeVotos) {
+                maiorQuantidadeVotos = votosCandidatos[i];
+            }
+        }
+
+        int quantidadeVencedores = 0;
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+            if (votosCandidatos[i] == maiorQuantidadeVotos) {
+                quantidadeVencedores++;
+            }
+        }
+
+        if (quantidadeVencedores == 1) {
+            System.out.print("Vencedor: ");
+        } else {
+            System.out.print("Empate entre: ");
+        }
+
+        boolean primeiroNome = true;
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+
+            if (votosCandidatos[i] == maiorQuantidadeVotos) {
+
+                if (!primeiroNome) {
+                    System.out.print(", ");
+                }
+
+                System.out.print(nomesCandidatos[i]);
+                primeiroNome = false;
+            }
+        }
+
+        System.out.println();
     }
 
     static void mostrarCandidatos() {
